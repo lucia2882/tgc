@@ -4,9 +4,8 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour
 {
     Rigidbody2D rb;
-    Vector3 movementDirection;
-    [SerializedField] private float horizontalMovement;
-    [SerializedField] private float verticalMovement;
+    Vector2 movementDirection;
+    [SerializeField] private float velocity;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -18,8 +17,13 @@ public class CharacterMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rb.AddForce(movementDirection, ForceMode2D.Impulse);  
-        movementDirection = new Vector3(0, 100, 0);
+        movementDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        movementDirection = transform.TransformDirection(movementDirection);
+    }
+
+    private void FixedUpdate()
+    {
+        rb.linearVelocity = movementDirection * velocity;
     }
 }
 
